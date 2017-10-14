@@ -1,0 +1,11 @@
+name: utility
+title: Utility
+account: jonie
+server: shinyapps.io
+appId: 206653
+bundleId: 949591
+url: https://jonie.shinyapps.io/utility/
+when: 1503409246.55981
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: pic_PW_Conductivity.png|pic_PW_TAMC.png|pic_PW_TOC.png|pic_wfo.png|server - for ggplot2 ver 1.0.1 .R

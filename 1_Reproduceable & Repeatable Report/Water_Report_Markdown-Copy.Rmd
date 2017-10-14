@@ -1,0 +1,63 @@
+---
+title: "Water Trend Peer Review"
+author: "Jonie"
+date: '2017-07-28'
+output:
+  ioslides_presentation: default
+  slidy_presentation: default
+---
+##Introduction
+</br>
+WFO: WFO would be used for equipment cleaning and handwashing.
+
+</br>
+This trend Analysis would review the data weekly.
+
+***
+###Plot | WFO Generation System
+
+If there's an break for alert or action limit lines, it indicates that the new alert and action is effectived on the date of the break location. A new alert and action limit line can be displayed only after NLT 2 points after limit changing are collected.
+
+```{r, echo=FALSE,results="markup",out.height=470}
+library(openxlsx)
+source("~/Instance/1_Reproduceable & Repeatable Report/b.trend3.2.2_foregoa.R")
+td<-read.xlsx("~/Instance/Data/Data Demo.xlsx","WFO-Data-Input",detectDates=T)
+
+td$Alert<-as.numeric(as.character(td$Alert))
+td$Action<-as.numeric(as.character(td$Action))
+b.trend(trend_result=td$Result,trend_date=td$Date,trend_room=NA,trend_point=td$Point,trend_alert=td$Alert,trend_action=td$Action,days=360,point.choose=NA,limit=T,add=T,t.title="WFO Trend Chart")
+```
+
+***
+###Plot | PW-TAMC
+```{r, echo=FALSE,results="markup",out.height=470}
+library(openxlsx)
+source("~/Instance/1_Reproduceable & Repeatable Report/b.trend3.2.2_foregoa.R")
+td<-read.xlsx("~/Instance/Data/Data Demo.xlsx",sheet="PW-TAMC-Input",detectDates=T)
+td$Alert<-as.numeric(as.character(td$Alert))
+td$Action<-as.numeric(as.character(td$Action))
+b.trend(trend_result=td$Result,trend_date=td$Date,trend_room=NA,trend_point=td$Point,trend_alert=td$Alert,trend_action=td$Action,days=360,point.choose=NA,limit=T,add=T,t.title="PW TAMC Trend Chart")
+```
+
+***
+###Plot | PW-Conductivity
+```{r, echo=FALSE,results="markup",out.height=470}
+library(openxlsx)
+source("~/Instance/1_Reproduceable & Repeatable Report/b.trend3.2.2_foregoa.R")
+td<-read.xlsx("~/Instance/Data/Data Demo.xlsx",sheet="PW-Conductivity-Input",detectDates=T)
+td$Alert<-as.numeric(as.character(td$Alert))
+td$Action<-as.numeric(as.character(td$Action))
+b.trend(trend_result=td$Result,trend_date=td$Date,trend_room=NA,trend_point=td$Point,trend_alert=td$Alert,trend_action=td$Action,days=360,point.choose=NA,limit=T,add=T,t.title="PW Conductitivy Trend Chart")
+```
+
+***
+###Plot | PW-TOC
+```{r, echo=FALSE,results="markup",out.height=470}
+library(openxlsx)
+source("~/Instance/1_Reproduceable & Repeatable Report/b.trend3.2.2_foregoa.R")
+td<-read.xlsx("~/Instance/Data/Data Demo.xlsx",sheet="PW-TOC-Input",detectDates=T)
+
+td$Alert<-as.numeric(as.character(td$Alert))
+td$Action<-as.numeric(as.character(td$Action))
+b.trend(trend_result=td$Result,trend_date=td$Date,trend_room=NA,trend_point=td$Point,trend_alert=td$Alert,trend_action=td$Action,days=360,point.choose=NA,limit=T,add=T,t.title="PW TOC Trend Chart")
+```
