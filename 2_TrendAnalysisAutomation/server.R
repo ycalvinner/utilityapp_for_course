@@ -37,14 +37,18 @@ shinyServer(function(input, output) {
       alertxend<-as.Date(c(alertx[-1],dataset_WFO()$Date[length(dataset_WFO()$Date)]))
       alertyend<-alerty
       alertline<-data.frame(alertx,alerty,alertxend,alertyend)
+      alertline<-alertline[!is.na(alertline$alerty),]
       alertpoint<-data.frame(x=as.Date(alertx[-1]),y=alerty[-length(alerty)])
+      alertpoint<-alertpoint[!is.na(alertpoint$y),]
       ##action limit line & blank point data process
       actionx<-as.Date(dataset_WFO()$Date[!duplicated(dataset_WFO()$Action)])
       actiony<-dataset_WFO()$Action[!duplicated(dataset_WFO()$Action)]
       actionxend<-as.Date(c(actionx[-1],dataset_WFO()$Date[length(dataset_WFO()$Date)]))
       actionyend<-actiony
       actionline<-data.frame(actionx,actiony,actionxend,actionyend)
+      actionline<-actionline[!is.na(actionline$actiony),]
       actionpoint<-data.frame(x=as.Date(actionx[-1]),y=actiony[-length(actiony)])
+      actionpoint<-actionpoint[!is.na(actionpoint$y),]
       ##Plot Creation
       td_wfo<-ggplot(dataset_WFO())+
                 geom_point(aes(x=Date,y=Result,colour=Point,shape=Point))+
@@ -60,7 +64,7 @@ shinyServer(function(input, output) {
                 geom_point(data=actionpoint,aes(x,y),shape=1,color="#CD6600")+
                 annotate("text",
                          x=as.Date(rep(alertx[1],2)),y=c(alerty[1],actiony[1])+75,
-                         label=c("Alert Limit","Action Limit"),size=3,hjust=0)
+                         label=c("Alert Limit","Action Limit"),size=3,hjust=0,vjust=-0.2)
       
     }
     ggsave("pic_wfo.png")
