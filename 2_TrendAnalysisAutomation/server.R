@@ -32,18 +32,26 @@ shinyServer(function(input, output) {
   output$plot_wfo<-renderPlot({
     if(is.null(dataset_WFO())) return(NULL)
     if(!is.null(dataset_WFO())){
-      alertx<-as.Date(dataset_WFO()$Date[!duplicated(dataset_WFO()$Alert)])
-      alerty<-dataset_WFO()$Alert[!duplicated(dataset_WFO()$Alert)]
-      alertxend<-as.Date(c(alertx[-1],dataset_WFO()$Date[length(dataset_WFO()$Date)]))
+      #Filter viable creation.
+      alertfilter<-dataset_WFO()$Alert
+      alertfilter[is.na(alertfilter)]<-pi
+      actionfilter<-dataset_WFO()$Action
+      actionfilter[is.na(actionfilter)]<-pi
+      alertund<-c(TRUE,diff(alertfilter)!=0)
+      actionund<-c(TRUE,diff(actionfilter)!=0)
+      #Alert limit line & blank point data process
+      alertx<-as.Date(dataset_WFO()$Date[alertund])
+      alerty<-dataset_WFO()$Alert[alertund]
+      alertxend<-c(alertx[-1],as.Date(dataset_WFO()$Date[length(dataset_WFO()$Date)]))
       alertyend<-alerty
       alertline<-data.frame(alertx,alerty,alertxend,alertyend)
       alertline<-alertline[!is.na(alertline$alerty),]
       alertpoint<-data.frame(x=as.Date(alertx[-1]),y=alerty[-length(alerty)])
       alertpoint<-alertpoint[!is.na(alertpoint$y),]
       ##action limit line & blank point data process
-      actionx<-as.Date(dataset_WFO()$Date[!duplicated(dataset_WFO()$Action)])
-      actiony<-dataset_WFO()$Action[!duplicated(dataset_WFO()$Action)]
-      actionxend<-as.Date(c(actionx[-1],dataset_WFO()$Date[length(dataset_WFO()$Date)]))
+      actionx<-as.Date(dataset_WFO()$Date[actionund])
+      actiony<-dataset_WFO()$Action[actionund]
+      actionxend<-c(actionx[-1],as.Date(dataset_WFO()$Date[length(dataset_WFO()$Date)]))
       actionyend<-actiony
       actionline<-data.frame(actionx,actiony,actionxend,actionyend)
       actionline<-actionline[!is.na(actionline$actiony),]
@@ -51,21 +59,20 @@ shinyServer(function(input, output) {
       actionpoint<-actionpoint[!is.na(actionpoint$y),]
       ##Plot Creation
       td_wfo<-ggplot(dataset_WFO())+
-                geom_point(aes(x=Date,y=Result,colour=Point,shape=Point))+
-                geom_line(aes(x=Date,y=Result,colour=Point))+
-                scale_x_date(date_breaks="1 month")+
-                theme(axis.text.x=element_text(angle=90,vjust=0.5))+
-                ylim(c(0,max(dataset_WFO()$Action)*1.1))+
-                geom_segment(data=alertline,aes(x=alertx,y=alerty,xend=alertxend,yend=alertyend),
-                              colour="#FFD700")+
-                geom_point(data=alertpoint,aes(x,y),shape=1,color="#FFD700")+
-                geom_segment(data=actionline,aes(x=actionx,y=actiony,xend=actionxend,yend=actionyend),
-                              colour="#CD6600")+
-                geom_point(data=actionpoint,aes(x,y),shape=1,color="#CD6600")+
-                annotate("text",
-                         x=as.Date(rep(alertx[1],2)),y=c(alerty[1],actiony[1])+75,
-                         label=c("Alert Limit","Action Limit"),size=3,hjust=0,vjust=-0.2)
-      
+        geom_point(aes(x=Date,y=Result,colour=Point,shape=Point))+
+        geom_line(aes(x=Date,y=Result,colour=Point))+
+        scale_x_date(date_breaks="1 month")+
+        theme(axis.text.x=element_text(angle=90,vjust=0.5))+
+        ylim(c(0,max(dataset_WFO()$Action)*1.1))+
+        geom_segment(data=alertline,aes(x=alertx,y=alerty,xend=alertxend,yend=alertyend),
+                     colour="#FFD700")+
+        geom_point(data=alertpoint,aes(x,y),shape=1,color="#FFD700")+
+        geom_segment(data=actionline,aes(x=actionx,y=actiony,xend=actionxend,yend=actionyend),
+                     colour="#CD6600")+
+        geom_point(data=actionpoint,aes(x,y),shape=1,color="#CD6600")+
+        annotate("text",
+                 x=as.Date(rep(alertx[1],2)),y=c(alerty[1],actiony[1]),
+                 label=c("Alert Limit","Action Limit"),size=3,hjust=0,vjust=-0.2) 
     }
     ggsave("pic_wfo.png")
     td_wfo
@@ -104,8 +111,49 @@ shinyServer(function(input, output) {
   
   output$plot_pw_tamc<-renderPlot({
     if(is.null(dataset_PW_TAMC())) return(NULL)
-    if(!is.null(dataset_PW_TAMC())) td_pw_tamc<-ggplot(dataset_PW_TAMC(),aes(x=Date,y=Result,color=Point))+geom_line()+geom_point()+scale_x_date(date_breaks="month",date_label="%Y-%m-%d")+theme(axis.text.x=element_text(angle=90))
-
+    if(!is.null(dataset_PW_TAMC())){
+    #Filter viable creation.
+    alertfilter<-dataset_PW_TAMC()$Alert
+    alertfilter[is.na(alertfilter)]<-pi
+    actionfilter<-dataset_PW_TAMC()$Action
+    actionfilter[is.na(actionfilter)]<-pi
+    alertund<-c(TRUE,diff(alertfilter)!=0)
+    actionund<-c(TRUE,diff(actionfilter)!=0)
+    #Alert limit line & blank point data process
+    alertx<-as.Date(dataset_PW_TAMC()$Date[alertund])
+    alerty<-dataset_PW_TAMC()$Alert[alertund]
+    alertxend<-c(alertx[-1],as.Date(dataset_PW_TAMC()$Date[length(dataset_PW_TAMC()$Date)]))
+    alertyend<-alerty
+    alertline<-data.frame(alertx,alerty,alertxend,alertyend)
+    alertline<-alertline[!is.na(alertline$alerty),]
+    alertpoint<-data.frame(x=as.Date(alertx[-1]),y=alerty[-length(alerty)])
+    alertpoint<-alertpoint[!is.na(alertpoint$y),]
+    ##action limit line & blank point data process
+    actionx<-as.Date(dataset_PW_TAMC()$Date[actionund])
+    actiony<-dataset_PW_TAMC()$Action[actionund]
+    actionxend<-c(actionx[-1],as.Date(dataset_PW_TAMC()$Date[length(dataset_PW_TAMC()$Date)]))
+    actionyend<-actiony
+    actionline<-data.frame(actionx,actiony,actionxend,actionyend)
+    actionline<-actionline[!is.na(actionline$actiony),]
+    actionpoint<-data.frame(x=as.Date(actionx[-1]),y=actiony[-length(actiony)])
+    actionpoint<-actionpoint[!is.na(actionpoint$y),]
+    ##Plot Creation
+    td_pw_tamc<-ggplot(dataset_PW_TAMC())+
+      geom_point(aes(x=Date,y=Result,colour=Point,shape=Point))+
+      geom_line(aes(x=Date,y=Result,colour=Point))+
+      scale_x_date(date_breaks="1 month")+
+      theme(axis.text.x=element_text(angle=90,vjust=0.5))+
+      ylim(c(0,max(dataset_PW_TAMC()$Action)*1.1))+
+      geom_segment(data=alertline,aes(x=alertx,y=alerty,xend=alertxend,yend=alertyend),
+                   colour="#FFD700")+
+      geom_point(data=alertpoint,aes(x,y),shape=1,color="#FFD700")+
+      geom_segment(data=actionline,aes(x=actionx,y=actiony,xend=actionxend,yend=actionyend),
+                   colour="#CD6600")+
+      geom_point(data=actionpoint,aes(x,y),shape=1,color="#CD6600")+
+          annotate("text",
+                   x=as.Date(rep(alertx[1],2)),y=c(alerty[1],actiony[1]),
+                   label=c("Alert Limit","Action Limit"),size=3,hjust=0,vjust=-0.2) 
+    }
     ggsave("pic_PW_TAMC.png")
     td_pw_tamc
   })
@@ -142,7 +190,49 @@ shinyServer(function(input, output) {
   
   output$plot_pw_conductivity<-renderPlot({
     if(is.null(dataset_PW_Conductivity())) return(NULL)
-    if(!is.null(dataset_PW_Conductivity())) td_pw_conductivity<-ggplot(dataset_PW_Conductivity(),aes(x=Date,y=Result,color=Point))+geom_line()+geom_point()+scale_x_date(date_breaks="month",date_label="%Y-%m-%d")+theme(axis.text.x=element_text(angle=90))
+    if(!is.null(dataset_PW_Conductivity())) {
+      #Filter viable creation.
+      alertfilter<-dataset_PW_Conductivity()$Alert
+      alertfilter[is.na(alertfilter)]<-pi
+      actionfilter<-dataset_PW_Conductivity()$Action
+      actionfilter[is.na(actionfilter)]<-pi
+      alertund<-c(TRUE,diff(alertfilter)!=0)
+      actionund<-c(TRUE,diff(actionfilter)!=0)
+      #Alert limit line & blank point data process
+      alertx<-as.Date(dataset_PW_Conductivity()$Date[alertund])
+      alerty<-dataset_PW_Conductivity()$Alert[alertund]
+      alertxend<-c(alertx[-1],as.Date(dataset_PW_Conductivity()$Date[length(dataset_PW_Conductivity()$Date)]))
+      alertyend<-alerty
+      alertline<-data.frame(alertx,alerty,alertxend,alertyend)
+      alertline<-alertline[!is.na(alertline$alerty),]
+      alertpoint<-data.frame(x=as.Date(alertx[-1]),y=alerty[-length(alerty)])
+      alertpoint<-alertpoint[!is.na(alertpoint$y),]
+      ##action limit line & blank point data process
+      actionx<-as.Date(dataset_PW_Conductivity()$Date[actionund])
+      actiony<-dataset_PW_Conductivity()$Action[actionund]
+      actionxend<-c(actionx[-1],as.Date(dataset_PW_Conductivity()$Date[length(dataset_PW_Conductivity()$Date)]))
+      actionyend<-actiony
+      actionline<-data.frame(actionx,actiony,actionxend,actionyend)
+      actionline<-actionline[!is.na(actionline$actiony),]
+      actionpoint<-data.frame(x=as.Date(actionx[-1]),y=actiony[-length(actiony)])
+      actionpoint<-actionpoint[!is.na(actionpoint$y),]
+      ##Plot Creation
+      td_pw_conductivity<-ggplot(dataset_PW_Conductivity())+
+        geom_point(aes(x=Date,y=Result,colour=Point,shape=Point))+
+        geom_line(aes(x=Date,y=Result,colour=Point))+
+        scale_x_date(date_breaks="1 month")+
+        theme(axis.text.x=element_text(angle=90,vjust=0.5))+
+        ylim(c(0,max(dataset_PW_Conductivity()$Action)*1.1))+
+        geom_segment(data=alertline,aes(x=alertx,y=alerty,xend=alertxend,yend=alertyend),
+                     colour="#FFD700")+
+        geom_point(data=alertpoint,aes(x,y),shape=1,color="#FFD700")+
+        geom_segment(data=actionline,aes(x=actionx,y=actiony,xend=actionxend,yend=actionyend),
+                     colour="#CD6600")+
+        geom_point(data=actionpoint,aes(x,y),shape=1,color="#CD6600")+
+              annotate("text",
+                       x=as.Date(rep(alertx[1],2)),y=c(alerty[1],actiony[1]),
+                       label=c("Alert Limit","Action Limit"),size=3,hjust=0,vjust=-0.2) 
+    }
 
     ggsave("pic_PW_Conductivity.png")
     td_pw_conductivity
@@ -180,8 +270,50 @@ shinyServer(function(input, output) {
   
   output$plot_pw_toc<-renderPlot({
     if(is.null(dataset_PW_toc())) return(NULL)
-    if(!is.null(dataset_PW_toc())) td_pw_toc<-ggplot(dataset_PW_toc(),aes(x=Date,y=Result,color=Point))+geom_line()+geom_point()+scale_x_date(date_breaks="month",date_label="%Y-%m-%d")+theme(axis.text.x=element_text(angle=90))
-
+    if(!is.null(dataset_PW_toc())) {
+      #Filter viable creation.
+      alertfilter<-dataset_PW_toc()$Alert
+      alertfilter[is.na(alertfilter)]<-pi
+      actionfilter<-dataset_PW_toc()$Action
+      actionfilter[is.na(actionfilter)]<-pi
+      alertund<-c(TRUE,diff(alertfilter)!=0)
+      actionund<-c(TRUE,diff(actionfilter)!=0)
+      #Alert limit line & blank point data process
+      alertx<-as.Date(dataset_PW_toc()$Date[alertund])
+      alerty<-dataset_PW_toc()$Alert[alertund]
+      alertxend<-c(alertx[-1],as.Date(dataset_PW_toc()$Date[length(dataset_PW_toc()$Date)]))
+      alertyend<-alerty
+      alertline<-data.frame(alertx,alerty,alertxend,alertyend)
+      alertline<-alertline[!is.na(alertline$alerty),]
+      alertpoint<-data.frame(x=as.Date(alertx[-1]),y=alerty[-length(alerty)])
+      alertpoint<-alertpoint[!is.na(alertpoint$y),]
+      ##action limit line & blank point data process
+      actionx<-as.Date(dataset_PW_toc()$Date[actionund])
+      actiony<-dataset_PW_toc()$Action[actionund]
+      actionxend<-c(actionx[-1],as.Date(dataset_PW_toc()$Date[length(dataset_PW_toc()$Date)]))
+      actionyend<-actiony
+      actionline<-data.frame(actionx,actiony,actionxend,actionyend)
+      actionline<-actionline[!is.na(actionline$actiony),]
+      actionpoint<-data.frame(x=as.Date(actionx[-1]),y=actiony[-length(actiony)])
+      actionpoint<-actionpoint[!is.na(actionpoint$y),]
+      ##Plot Creation
+      td_pw_toc<-ggplot(dataset_PW_toc())+
+        geom_point(aes(x=Date,y=Result,colour=Point,shape=Point))+
+        geom_line(aes(x=Date,y=Result,colour=Point))+
+        scale_x_date(date_breaks="1 month")+
+        theme(axis.text.x=element_text(angle=90,vjust=0.5))+
+        ylim(c(0,max(dataset_PW_toc()$Action)*1.1))+
+        geom_segment(data=alertline,aes(x=alertx,y=alerty,xend=alertxend,yend=alertyend),
+                     colour="#FFD700")+
+        geom_point(data=alertpoint,aes(x,y),shape=1,color="#FFD700")+
+        geom_segment(data=actionline,aes(x=actionx,y=actiony,xend=actionxend,yend=actionyend),
+                     colour="#CD6600")+
+        geom_point(data=actionpoint,aes(x,y),shape=1,color="#CD6600")+
+      annotate("text",
+               x=as.Date(rep(alertx[1],2)),y=c(alerty[1],actiony[1]),
+               label=c("Alert Limit","Action Limit"),size=3,hjust=0,vjust=-0.2) 
+      
+    }
     ggsave("pic_PW_TOC.png")
     td_pw_toc
   })
