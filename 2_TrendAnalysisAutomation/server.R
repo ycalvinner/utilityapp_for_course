@@ -74,13 +74,17 @@ shinyServer(function(input, output) {
                  x=as.Date(rep(alertx[1],2)),y=c(alerty[1],actiony[1]),
                  label=c("Alert Limit","Action Limit"),size=3,hjust=0,vjust=-0.2) 
     }
-    ggsave("pic_wfo.png")
     td_wfo
   })
   
   output$download_wfo <- downloadHandler(
     filename = "pic_wfo.png",
     content = function(targetfile){
+      owd<-getwd()
+      tempd<-tempdir()
+      setwd(tempd)
+      on.exit(setwd(owd))
+      ggsave("pic_wfo.png",width=14.6,height=6.8)
       file.copy("pic_wfo.png",targetfile)
     }
   )
@@ -154,13 +158,18 @@ shinyServer(function(input, output) {
                    x=as.Date(rep(alertx[1],2)),y=c(alerty[1],actiony[1]),
                    label=c("Alert Limit","Action Limit"),size=3,hjust=0,vjust=-0.2) 
     }
-    ggsave("pic_PW_TAMC.png")
+
     td_pw_tamc
   })
   
   output$download_pw_tamc <- downloadHandler(
     filename = "pic_PW_TAMC.png",
     content = function(targetfile){
+      owd<-getwd()
+      tempd<-tempdir()
+      setwd(tempd)
+      on.exit(setwd(owd))
+      ggsave("pic_PW_TAMC.png",width=14.6,height=6.8)
       file.copy("pic_PW_TAMC.png",targetfile)
     }
   )
@@ -233,14 +242,17 @@ shinyServer(function(input, output) {
                        x=as.Date(rep(alertx[1],2)),y=c(alerty[1],actiony[1]),
                        label=c("Alert Limit","Action Limit"),size=3,hjust=0,vjust=-0.2) 
     }
-
-    ggsave("pic_PW_Conductivity.png")
     td_pw_conductivity
   })
   
   output$download_pw_conductivity <- downloadHandler(
     filename = "pic_PW_Conductivity.png",
     content = function(targetfile){
+      owd<-getwd()
+      tempd<-tempdir()
+      setwd(tempd)
+      on.exit(setwd(owd))
+      ggsave("pic_PW_Conductivity.png",width=14.6,height=6.8)
       file.copy("pic_PW_Conductivity.png",targetfile)
     }
   )  
@@ -314,13 +326,17 @@ shinyServer(function(input, output) {
                label=c("Alert Limit","Action Limit"),size=3,hjust=0,vjust=-0.2) 
       
     }
-    ggsave("pic_PW_TOC.png")
     td_pw_toc
   })
   
   output$download_pw_toc <- downloadHandler(
     filename = "pic_PW_TOC.png",
     content = function(targetfile){
+      owd<-getwd()
+      tempd<-tempdir()
+      setwd(tempd)
+      on.exit(setwd(owd))
+      ggsave("pic_PW_TOC.png",width=14.6,height=6.8)
       file.copy("pic_PW_TOC.png",targetfile)
     }
   )    
