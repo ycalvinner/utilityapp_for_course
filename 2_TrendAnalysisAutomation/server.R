@@ -11,6 +11,9 @@ shinyServer(function(input, output) {
     if(is.null(inFile)) return(NULL)
     read.xlsx(inFile$datapath,sheet="WFO-Data-Input",detectDates = T) 
   })
+  output$wfo_point<-renderUI({
+    selectInput("point_wfo","Select Point",choice=unique(raw_wfo()$Point),multiple = TRUE)
+  })
   
   dataset_WFO<-reactive({
     if(is.null(raw_wfo())) return(NULL)
@@ -28,6 +31,7 @@ shinyServer(function(input, output) {
       )
     } 
   })
+
   
   output$plot_wfo<-renderPlot({
     if(is.null(dataset_WFO())) return(NULL)

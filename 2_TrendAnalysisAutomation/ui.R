@@ -14,11 +14,12 @@ shinyUI(tagList(
                               format="yyyy-mm-dd"),
                downloadButton('download_wfo', 'Download'),
                radioButtons("point_wfo_ai","Point Overall selection",choices=list("All-point selection will not work"="All","Individual"="Individual")),
-               selectInput("point_wfo","Point Individual Selection - Multi allow",
-                           choice=list(
-                             "Point-1","Point-2","Point-3"),
-                           multiple=TRUE
-               )
+               #selectInput("point_wfo","Point Individual Selection - Multi allow",
+               #            choice=list(
+               #              "Point-1","Point-2","Point-3"),
+               #            multiple=TRUE
+               #)
+             uiOutput("wfo_point")
              ),
              
              mainPanel(
