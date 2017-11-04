@@ -19,7 +19,10 @@ shinyUI(tagList(
                #              "Point-1","Point-2","Point-3"),
                #            multiple=TRUE
                #)
-             uiOutput("wfo_point")
+               conditionalPanel("input.point_wfo_ai=='Individual'",
+                 uiOutput("wfo_point")
+               )
+               
              ),
              
              mainPanel(
