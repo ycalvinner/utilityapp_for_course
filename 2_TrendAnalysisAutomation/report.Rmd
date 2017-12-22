@@ -1,0 +1,13 @@
+
+
+```{r,echo=FALSE,collapse=TRUE}
+	reactive({
+	  input$des_wfo_pre
+	})()
+```
+![](pic_wfo.png)
+```{r,echo=FALSE,collapse=TRUE}
+	reactive({
+	  input$des_wfo_summary
+	})()
+```

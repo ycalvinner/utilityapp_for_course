@@ -2,33 +2,45 @@ library(shiny)
 library(shinythemes)
 
 shinyUI(tagList(
-  shinythemes::themeSelector(),
+#  shinythemes::themeSelector(),
   navbarPage(
     "Utility Trend Analysis Application",
-    #
+    theme=shinytheme("cerulean"),
+	
     tabPanel("Water-WFO",
              sidebarPanel(
                fileInput("file_wfo","Please Select File"),
                dateRangeInput("daterange_wfo","Please input the date range",
                               start=Sys.Date()-360,end=Sys.Date(),
                               format="yyyy-mm-dd"),
-               downloadButton('download_wfo', 'Download'),
                radioButtons("point_wfo_ai","Point Overall selection",choices=list("All-point selection will not work"="All","Individual"="Individual")),
-               #selectInput("point_wfo","Point Individual Selection - Multi allow",
-               #            choice=list(
-               #              "Point-1","Point-2","Point-3"),
-               #            multiple=TRUE
-               #)
-               conditionalPanel("input.point_wfo_ai=='Individual'",
-                 uiOutput("wfo_point")
-               )
-               
+               conditionalPanel(
+                                condition='input.point_wfo_ai!="All"',
+                                uiOutput("ui_location_wfo")
+                                ),
+               br(),
+               radioButtons("format_wfo","Document Format",choices = c("HTML","PDF","WORD"),inline = TRUE),
+    
+               br(),
+               radioButtons("report_mode_wfo","Open/Close Report Mode",choices=c("Yes","No"),selected="No",inline=TRUE),
+               br(),
+               downloadButton('report_wfo', 'Download')
              ),
              
              mainPanel(
                tabsetPanel(
                  tabPanel("TAMC",
-                          plotOutput("plot_wfo")
+                          conditionalPanel(
+                            condition='input.report_mode_wfo=="Yes"',
+                            textAreaInput("des_wfo_pre","Please Input the system descripton",value = "")
+                          ),
+                          
+                          plotOutput("plot_wfo"),
+                          conditionalPanel(
+                            condition='input.report_mode_wfo=="Yes"',
+                            textAreaInput("des_wfo_summary","Please Input conclusion",value="")
+                          )
+                          
                  )
                )
              )
@@ -41,11 +53,7 @@ shinyUI(tagList(
                               start=Sys.Date()-360,end=Sys.Date(),
                               format="yyyy-mm-dd"),
                radioButtons("point_pw_ai","Point Overall selection",choices=list("All-point selection will not work"="All","Individual"="Individual")),
-               selectInput("point_pw","Point Individual Selection - Multi allow",
-                           choice=list(
-                             "Point-1","Point-2","Point-3"),
-                           multiple=TRUE
-               )
+               uiOutput("ui_location_pw")
              ),
              mainPanel(
                tabsetPanel(
@@ -76,4 +84,5 @@ shinyUI(tagList(
                )
              )
     )
+    
   )))
