@@ -19,6 +19,7 @@ shinyUI(tagList(
                                 uiOutput("ui_location_wfo")
                                 ),
                br(),
+               actionButton("action_ctl","Apply"),
                radioButtons("format_wfo","Document Format",choices = c("HTML","PDF","WORD"),inline = TRUE),
     
                br(),
@@ -34,7 +35,6 @@ shinyUI(tagList(
                             condition='input.report_mode_wfo=="Yes"',
                             textAreaInput("des_wfo_pre","Please Input the system descripton",value = "")
                           ),
-                          
                           plotOutput("plot_wfo"),
                           conditionalPanel(
                             condition='input.report_mode_wfo=="Yes"',

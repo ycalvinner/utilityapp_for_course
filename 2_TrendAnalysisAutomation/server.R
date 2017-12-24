@@ -22,6 +22,8 @@ shinyServer(function(input, output) {
   
   dataset_WFO<-reactive({
     if(is.null(raw_wfo())) return(NULL)
+    input$action_ctl
+    isolate({
     if(input$point_wfo_ai=="Individual") {
       raw_wfo() %>%  filter(
         Date>=input$daterange_wfo[1],
@@ -34,7 +36,8 @@ shinyServer(function(input, output) {
         Date>=input$daterange_wfo[1],
         Date<=input$daterange_wfo[2]
       )
-    } 
+    }
+    })
   })
   
   output$plot_wfo<-renderPlot({
