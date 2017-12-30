@@ -40,6 +40,15 @@ shinyServer(function(input, output) {
     })
   })
   
+  output$click_info_wfo<-renderPrint({
+    cat("Point information:\n")
+    nearPoints(dataset_WFO(),
+               input$wfo_click,
+               xvar="Date",yvar="Result",
+               threshold=30,maxpoints = 1,
+               addDist = TRUE)
+  })
+  
   output$plot_wfo<-renderPlot({
     if(is.null(dataset_WFO())) return(NULL)
     if(!is.null(dataset_WFO())) {

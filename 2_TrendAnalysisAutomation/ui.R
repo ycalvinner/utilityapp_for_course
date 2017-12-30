@@ -38,7 +38,13 @@ shinyUI(tagList(
                               condition='input.report_mode_wfo=="Yes"',
                               textAreaInput("des_wfo_pre","Please Input the system descripton",value = "")
                             ),
-                            plotOutput("plot_wfo"),
+                            plotOutput("plot_wfo",
+                                       click=clickOpts("wfo_click"),
+                                       dblclick = dblclickOpts(id="wfo_dbclick"),
+                                       hover = hoverOpts(id="wfo_hover"),
+                                       brush = brushOpts(id="wfo_brush")
+                            ),
+                            verbatimTextOutput("click_info_wfo"),
                             conditionalPanel(
                               condition='input.report_mode_wfo=="Yes"',
                               textAreaInput("des_wfo_summary","Please Input conclusion",value="")
@@ -95,6 +101,9 @@ shinyUI(tagList(
                 )
              )
     
+    ),
+    tabPanel("Other",
+      h3("Page is on developing")
     ))
   )
 ))
