@@ -50,6 +50,7 @@ shinyUI(tagList(
             )
     ),
     #
+    navbarMenu("More",
     tabPanel("Water-PW",
              fluidRow(
                 column(width=3,
@@ -94,6 +95,6 @@ shinyUI(tagList(
                 )
              )
     
-    )
+    ))
   )
 ))
