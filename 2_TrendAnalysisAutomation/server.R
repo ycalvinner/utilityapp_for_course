@@ -45,8 +45,24 @@ shinyServer(function(input, output) {
     nearPoints(dataset_WFO(),
                input$wfo_click,
                xvar="Date",yvar="Result",
-               threshold=30,maxpoints = 1,
-               addDist = TRUE)
+               threshold=30,maxpoints = 1#,
+               #addDist = TRUE
+               )
+  })
+
+  output$hover_info_wfo<-renderPrint({
+    cat("Point information:\n")
+    nearPoints(dataset_WFO(),
+               input$wfo_hover,
+               xvar="Date",yvar="Result",
+               threshold=30,maxpoints = 1)
+  })
+  
+  output$brush_info_wfo<-renderPrint({
+    cat("Point information:\n")
+    brushedPoints(dataset_WFO(),
+               input$wfo_brush,
+               xvar="Date",yvar="Result")
   })
   
   output$plot_wfo<-renderPlot({

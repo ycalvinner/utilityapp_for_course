@@ -44,7 +44,13 @@ shinyUI(tagList(
                                        hover = hoverOpts(id="wfo_hover"),
                                        brush = brushOpts(id="wfo_brush")
                             ),
-                            verbatimTextOutput("click_info_wfo"),
+                            verbatimTextOutput("test"),
+                            fluidRow(
+                              tabsetPanel("point_info",
+                                          tabPanel("click",verbatimTextOutput("click_info_wfo")),
+                                          tabPanel("hover",verbatimTextOutput("hover_info_wfo")),
+                                          tabPanel("brush",verbatimTextOutput("brush_info_wfo"))
+                              )),
                             conditionalPanel(
                               condition='input.report_mode_wfo=="Yes"',
                               textAreaInput("des_wfo_summary","Please Input conclusion",value="")
