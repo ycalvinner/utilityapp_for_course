@@ -106,7 +106,6 @@ shinyUI(tagList(
                        )
                 )
              )
-    
     ),
     tabPanel("Other",
       h3("Page is on developing")
