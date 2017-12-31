@@ -36,7 +36,7 @@ shinyUI(tagList(
                     tabPanel("TAMC",
                             conditionalPanel(
                               condition='input.report_mode_wfo=="Yes"',
-                              textAreaInput("des_wfo_pre","Please Input the system descripton",value = "")
+                              textAreaInput("des_wfo_pre","Please Input the system descripton",value = "",width = '100%')
                             ),
                             plotOutput("plot_wfo",
                                        click=clickOpts("wfo_click"),
