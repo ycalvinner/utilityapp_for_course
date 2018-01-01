@@ -32,32 +32,37 @@ shinyUI(tagList(
                       )
                 ),
                 column(9,
-                  tabsetPanel(
-                    tabPanel("TAMC",
-                            conditionalPanel(
-                              condition='input.report_mode_wfo=="Yes"',
-                              textAreaInput("des_wfo_pre","Please Input the system descripton",value = "",width = '100%')
-                            ),
-                            plotOutput("plot_wfo",
-                                       click=clickOpts("wfo_click"),
-                                       dblclick = dblclickOpts(id="wfo_dbclick"),
-                                       hover = hoverOpts(id="wfo_hover"),
-                                       brush = brushOpts(id="wfo_brush")
-                            ),
-                            verbatimTextOutput("test"),
-                            fluidRow(
-                              tabsetPanel("point_info",
-                                          tabPanel("click",verbatimTextOutput("click_info_wfo")),
-                                          tabPanel("hover",verbatimTextOutput("hover_info_wfo")),
-                                          tabPanel("brush",verbatimTextOutput("brush_info_wfo"))
-                              )),
-                            conditionalPanel(
-                              condition='input.report_mode_wfo=="Yes"',
-                              textAreaInput("des_wfo_summary","Please Input conclusion",value="")
-                            )
-                          
-                    )
-                  )
+                       fluidRow(
+                         h5(textOutput("currenttime"))
+                       ),
+                       fluidRow(
+                                tabsetPanel(
+                                  tabPanel("TAMC",
+                                           conditionalPanel(
+                                             condition='input.report_mode_wfo=="Yes"',
+                                             textAreaInput("des_wfo_pre","Please Input the system descripton",value = "",width = '100%')
+                                           ),
+                                           plotOutput("plot_wfo",
+                                                     click=clickOpts("wfo_click"),
+                                                     dblclick = dblclickOpts(id="wfo_dbclick"),
+                                                     hover = hoverOpts(id="wfo_hover"),
+                                                     brush = brushOpts(id="wfo_brush")
+                                          ),
+                                          verbatimTextOutput("test"),
+                                          fluidRow(
+                                            tabsetPanel("point_info",
+                                                        tabPanel("click",verbatimTextOutput("click_info_wfo")),
+                                                        tabPanel("hover",verbatimTextOutput("hover_info_wfo")),
+                                                        tabPanel("brush",verbatimTextOutput("brush_info_wfo"))
+                                            )),
+                                          conditionalPanel(
+                                            condition='input.report_mode_wfo=="Yes"',
+                                            textAreaInput("des_wfo_summary","Please Input conclusion",value="")
+                                          )
+                                        
+                                  )
+                                )
+                       )
                )
             )
     ),

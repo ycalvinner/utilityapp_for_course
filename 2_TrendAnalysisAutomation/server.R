@@ -4,10 +4,15 @@ library(openxlsx)
 library(dplyr)
 #WFO<-read.xlsx("E:/study/R/R_Code_myself/Drug_Quality_Management/trendapp/utilityapp/water.xlsx",sheet="WFO-Data-Input",detectDates = T)
 
-shinyServer(function(input, output) {
+shinyServer(function(input, output,session) {
   #WFO-TAMC######################
   tempd_wfo<-renderText({
     tempdir()
+  })
+  
+  output$currenttime<-renderText({
+    invalidateLater(1000,session)
+    paste("Current Time", Sys.time())
   })
   
   raw_wfo<-reactive({
