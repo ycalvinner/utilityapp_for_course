@@ -24,9 +24,9 @@ shinyUI(tagList(
                         actionButton("action_ctl","Apply")
                       ),
                       wellPanel(
-                        radioButtons("format_wfo","Document Format",choices = c("HTML","PDF","WORD"),inline = TRUE),
-                        br(),
                         radioButtons("report_mode_wfo","Open/Close Report Mode",choices=c("Yes","No"),selected="No",inline=TRUE),
+                        br(),
+                        radioButtons("format_wfo","Document Format",choices = c("HTML","PDF","WORD"),inline = TRUE),
                         br(),
                         downloadButton('report_wfo', 'Download')
                       )
