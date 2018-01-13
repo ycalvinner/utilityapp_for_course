@@ -1,13 +1,19 @@
 
-
+#WFO intro
 ```{r,echo=FALSE,collapse=TRUE}
 	reactive({
 	  input$des_wfo_pre
 	})()
 ```
+#WFO pic
 ![](pic_wfo.png)
+#WFO summary
 ```{r,echo=FALSE,collapse=TRUE}
 	reactive({
 	  input$des_wfo_summary
 	})()
 ```
+
+
+
+
