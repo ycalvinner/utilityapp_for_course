@@ -116,7 +116,17 @@ shinyUI(tagList(
     ),
     navbarMenu("More",
     tabPanel("Other",
-      h3("Page is on developing")
+             fluidRow(
+               column(8,    
+                      h3("session$clientdata values"),
+                      verbatimTextOutput("ClientSummary"),
+                      h3("Parsed URL query string"),
+                      verbatimTextOutput("queryText", placeholder = TRUE)
+               ),
+               singleton(
+                 tags$head(tags$script(src = "message-handler.js"))
+               ) 
+             )
     ))
   )
 ))
