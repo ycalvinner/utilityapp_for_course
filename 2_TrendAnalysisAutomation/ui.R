@@ -36,7 +36,7 @@ shinyUI(tagList(
                          h5(textOutput("currenttime"))
                        ),
                        fluidRow(
-                                tabsetPanel(
+                                tabsetPanel(id="Tab_WFO",
                                   tabPanel("TAMC",
                                            conditionalPanel(
                                              condition='input.report_mode_wfo=="Yes"',
@@ -50,7 +50,7 @@ shinyUI(tagList(
                                           ),
                                           verbatimTextOutput("test"),
                                           fluidRow(
-                                            tabsetPanel("point_info",
+                                            tabsetPanel(
                                                         tabPanel("click",verbatimTextOutput("click_info_wfo")),
                                                         tabPanel("hover",verbatimTextOutput("hover_info_wfo")),
                                                         tabPanel("brush",verbatimTextOutput("brush_info_wfo"))
@@ -67,7 +67,6 @@ shinyUI(tagList(
             )
     ),
     #
-    navbarMenu("More",
     tabPanel("Water-PW",
              fluidRow(
                 column(width=3,
@@ -81,15 +80,16 @@ shinyUI(tagList(
                        )
                 ),
                 column(width=9,
-                       #wellPanel(
-                         tabsetPanel(
+                       fluidRow(
+                         tabsetPanel(id="Tab_PW",
                            ##
                            tabPanel("TAMC",
                                     br(),
                                     h5("Plot can be download from the bellow button:"),
                                     downloadButton('download_pw_tamc', 'Download'),
                                     br(),
-                                    plotOutput("plot_pw_tamc")
+                                    plotOutput("plot_pw_tamc"),
+                           value="TAMC"
                            ),
                            ##
                            tabPanel("Conductivity",
@@ -97,7 +97,8 @@ shinyUI(tagList(
                                     h5("Plot can be download from the bellow button:"),
                                     downloadButton('download_pw_conductivity', 'Download'),
                                     br(),
-                                    plotOutput("plot_pw_conductivity")        
+                                    plotOutput("plot_pw_conductivity")  ,
+                           value="Conductivity"
                            ),
                            ##
                            tabPanel("TOC",
@@ -105,13 +106,15 @@ shinyUI(tagList(
                                     h5("Plot can be download from the bellow button:"),
                                     downloadButton('download_pw_toc', 'Download'),
                                     br(),
-                                    plotOutput("plot_pw_toc")
+                                    plotOutput("plot_pw_toc"),
+                           value="TOC"    
                            )
-                         #)
+                         )
                        )
                 )
              )
     ),
+    navbarMenu("More",
     tabPanel("Other",
       h3("Page is on developing")
     ))

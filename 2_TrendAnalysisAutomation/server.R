@@ -2,7 +2,6 @@ library(shiny)
 library(ggplot2)
 library(openxlsx)
 library(dplyr)
-#WFO<-read.xlsx("E:/study/R/R_Code_myself/Drug_Quality_Management/trendapp/utilityapp/water.xlsx",sheet="WFO-Data-Input",detectDates = T)
 
 shinyServer(function(input, output,session) {
   #WFO-TAMC######################
